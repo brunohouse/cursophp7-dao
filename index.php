@@ -2,8 +2,19 @@
 
 require_once("config.php");
 
-$admin = new Usuario();
+// CARREGA UM USUÁRIO
 
-$admin->loadById(1);
+//$admin = new Usuario();
+//$admin->loadById(1);
+//echo $admin;
 
-echo $admin;
+// CARREGA UMA LISTA DE USUÁRIOS
+
+//$list = Usuario::getList();
+//echo json_encode($list);
+
+// CARREGA UMA LISTA DE USUÁRIOS BUSCANDO PELO LOGIN
+
+$search = Usuario::search("jo");
+
+echo json_encode($search);
