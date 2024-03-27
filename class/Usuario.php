@@ -38,6 +38,8 @@ class Usuario {
         $this->dtcadastro = $value;
     }
 
+    // CARREGA UM USUÁRIO PELO ID
+
     public function loadById($id){
 
         $sql = new Sql();
@@ -47,23 +49,22 @@ class Usuario {
 
         if(count($results) > 0){
 
-            $row = $results[0];
-
-            $this->setIdusuario($row['idusuario']);
-            $this->setDeslogin($row['deslogin']);
-            $this->setDessenha($row['dessenha']);
-            $this->setDtcadastro(new DateTime($row['dtcadastro']));
+            $this->setData($results[0]);
 
         }
 
     }
  
+    // CARREGA UMA LISTA DE USUÁRIOS
+
     public static function getList(){
         
         $sql = new Sql();
         return $sql->select("SELECT * FROM tb_usuarios ORDER BY deslogin");
 
     }
+
+    // CARREGA UMA LISTA DE USUÁRIOS BUSCANDO PELO LOGIN
 
     public static function search($login){
         
@@ -73,6 +74,61 @@ class Usuario {
         WHERE deslogin LIKE :SEARCH ORDER BY deslogin",array(':SEARCH'=>"%".$login."%"));
     }
 
+    //CONFIRMA O LOGIN A PARTIR DO LOGIN E SENHA
+
+
+    public function confirmaLogin($login,$password){
+
+        $sql = new Sql();
+
+        $results = $sql->select("SELECT * FROM tb_usuarios 
+        WHERE deslogin = :LOGIN AND dessenha = :PASSWORD", 
+        array(":LOGIN"=>$login,":PASSWORD"=>$password));
+
+        if(count($results) > 0){
+
+            $this->setData($results[0]);
+
+        }else{
+            throw new Exception("Login ou senha incorretos");            
+        }
+
+}
+
+    public function setData($data){
+
+        $this->setIdusuario($data['idusuario']);
+        $this->setDeslogin($data['deslogin']);
+        $this->setDessenha($data['dessenha']);
+        $this->setDtcadastro(new DateTime($data['dtcadastro']));
+
+    }
+
+// INSERINDO DADOS NO BANCO DE DADOS
+
+    public function insert(){
+
+        $sql = new Sql();
+        $results = $sql->select("CALL sp_usuarios_insert(:LOGIN, :PASSWORD)", array(
+            ':LOGIN'=>$this->getDeslogin(),
+            ':PASSWORD'=>$this->getDessenha()
+        ));
+
+        if(count($results) > 0){
+            $this->setData($results[0]);
+        }
+
+    }
+
+
+
+
+    
+    public function __construct($login = "", $password = ""){
+
+        $this->setDeslogin($login);
+        $this->setDessenha($password);
+    }
 
 
     public function __toString(){
