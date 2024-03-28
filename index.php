@@ -40,7 +40,16 @@ require_once("config.php");
 
 // ATUALIZANDO UM USUARIO DO BANCO DE DADOS
 
-$usuario = new Usuario();
-$usuario->loadById(12);
+//$usuario = new Usuario();
+//$usuario->loadById(12);
+//echo $usuario;
 
+
+// DELETA UM USUARIO APARTIR DO ID
+
+
+$usuario = new Usuario();
+
+$usuario->loadById(9);
+$usuario->delete();
 echo $usuario;
