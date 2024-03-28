@@ -13,10 +13,14 @@ require_once("config.php");
 //$list = Usuario::getList();
 //echo json_encode($list);
 
+
+
 // CARREGA UMA LISTA DE USUÁRIOS BUSCANDO PELO LOGIN
 
 //$search = Usuario::search("jo");
 //echo json_encode($search);
+
+
 
 // CONFIRMA O LOGIN A PARTIR DO LOGIN E SENHA
 
@@ -24,10 +28,19 @@ require_once("config.php");
 //$usuario->confirmaLogin("brunohouse","123456");
 //echo ($usuario);
 
+
+
+
 // INSERINDO UM NOVO USUARIO
 
-$aluno = new Usuario("André Pupo","987654321");
+//$aluno = new Usuario("pedro pupo","eahuehaueah");
+//$aluno->insert();
+//echo $aluno;
 
-$aluno->insert();
 
-echo $aluno;
+// ATUALIZANDO UM USUARIO DO BANCO DE DADOS
+
+$usuario = new Usuario();
+$usuario->loadById(12);
+
+echo $usuario;

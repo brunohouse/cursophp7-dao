@@ -80,7 +80,7 @@ class Usuario {
     public function confirmaLogin($login,$password){
 
         $sql = new Sql();
-
+        
         $results = $sql->select("SELECT * FROM tb_usuarios 
         WHERE deslogin = :LOGIN AND dessenha = :PASSWORD", 
         array(":LOGIN"=>$login,":PASSWORD"=>$password));
@@ -120,10 +120,27 @@ class Usuario {
 
     }
 
+// ATUALIZA UM DADO DO JÁ INSERIDO NO BANCO DE DADOS
+
+
+    public function update($login,$password){
+
+        $this->setDeslogin($login);
+        $this->setDessenha($password);
+
+        $sql = new Sql();
+
+        $sql->execQuery("UPDATE tb_usuarios SET deslogin = :LOGIN, 
+        dessenha = :PASSWORD WHERE idusuario = :ID",array(
+            ':LOGIN'=>$this->getDeslogin(),
+            ':PASSWORD'=>$this->getDessenha(),
+            ':ID'=>$this->getIdusuario()));
+
+    }
 
 
 
-    
+
     public function __construct($login = "", $password = ""){
 
         $this->setDeslogin($login);
